@@ -50,6 +50,9 @@ def eval_fn(val_dataloader, detector, criterion, device):
     detector.eval()
     criterion.eval()
     eval_loss = utils.AverageMeter()
+    bbox_loss = utils.AverageMeter()
+    giou_loss = utils.AverageMeter()
+    labels_loss = utils.AverageMeter()
 
     for images, targets, image_ids in tqdm(val_dataloader):
         images = list(image.to(device) for image in images)
