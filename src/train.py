@@ -4,10 +4,12 @@ from pprint import pprint
 import config
 from torchvision import transforms as T
 import pandas as pd
+from tqdm import tqdm
 import model
 # from model import detr_model
 import engine
 import numpy as np
+import detr_loss
 import torch
 import torch.optim as optim
 from torch.utils.data import DataLoader, Dataset
@@ -50,17 +52,23 @@ def run():
         number of classes = {}, number of queries = {}'''.format(config.BACKBONE, config.pretrained,
         config.NUM_CLASSES, config.NUM_QUERIES))
     
+    matcher = detr_loss.HungarianMatcher()
+    weight_dict = {"loss_ce" : 1, "loss_bbox" : 1, "loss_giou" : 1}
+    losses = ['labels', 'boxes', 'cardinality']
+
     optimizer = optim.Adam(detector.parameters(), lr=config.LEARNING_RATE)
     # lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.5)
     detector.to(device)
 
-    criterion = None # Call the Matcher
+    criterion = detr_loss.SetCriterion(config.NUM_CLASSES - 1, matcher, weight_dict, eos_coef=config.NULL_CLASS_COEF, losses=losses)
     criterion.to(device)
 
     max_loss = 99999
 
-    for epoch in range(config.EPOCHS):
-        print("Epocsh = {}".format(epoch))
+    print("------- Training Started ----- ")
+
+    for epoch in tqdm(range(config.EPOCHS)):
+        print("Epoch = {}".format(epoch))
         train_loss = engine.train_fn(train_dataloader, detector, criterion, optimizer, device)
         validation_loss = engine.eval_fn(valid_dataloader, detector, criterion, device)
 
