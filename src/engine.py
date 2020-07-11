@@ -36,7 +36,7 @@ def train_fn(train_dataloader, detector, criterion, optimizer, device, scheduler
         if scheduler is not None:
             scheduler.step()
         
-        total_loss.update(losses.item(), config.BATCH_SIZE)
+        total_loss.update(losses.item(), config.TRAIN_BATCH_SIZE)
         bbox_loss.update(loss_dict['loss_bbox'].item())
         giou_loss.update(loss_dict['loss_giou'].item())
         labels_loss.update(loss_dict['loss_ce'].item())
@@ -62,7 +62,7 @@ def eval_fn(val_dataloader, detector, criterion, device):
         weight_dict = criterion.weight_dict
         losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
     
-        eval_loss.update(losses.item(), config.BATCH_SIZE)
+        eval_loss.update(losses.item(), config.VALID_BATCH_SIZE)
         bbox_loss.update(loss_dict['loss_bbox'].item())
         giou_loss.update(loss_dict['loss_giou'].item())
         labels_loss.update(loss_dict['loss_ce'].item())
