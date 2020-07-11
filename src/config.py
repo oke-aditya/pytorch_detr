@@ -19,4 +19,4 @@ NUM_CLASSES = 4
 DETECTION_THRESHOLD = 0.25
 NULL_CLASS_COEF = 0.5
 
-MODEL_SAVE_PATH = "models/detr_{}.pt".format(BACKBONE)
+MODEL_SAVE_PATH = "detr_{}.pt".format(BACKBONE)

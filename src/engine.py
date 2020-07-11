@@ -62,10 +62,10 @@ def eval_fn(val_dataloader, detector, criterion, device):
         weight_dict = criterion.weight_dict
         losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
     
-        bbox_loss = loss_dict['loss_bbox'].item()
-        giou_loss = loss_dict['loss_giou'].item()
-        labels_loss = loss_dict['loss_ce'].item()
         eval_loss.update(losses.item(), config.BATCH_SIZE)
+        bbox_loss.update(loss_dict['loss_bbox'].item())
+        giou_loss.update(loss_dict['loss_giou'].item())
+        labels_loss.update(loss_dict['loss_ce'].item())
 
     print("Validation: ")
     print("Total_loss = {}, BBox_Loss = {}, GIOU_Loss = {}, Labels_Loss = {}".format(eval_loss.avg, bbox_loss.avg, giou_loss.avg, labels_loss.avg))
