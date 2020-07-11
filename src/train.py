@@ -49,7 +49,7 @@ def run():
     backbone=config.BACKBONE, pretrained=config.PRETRAINED)
 
     print('''Model Created with backbone = {}, pretrained = {}, 
-        number of classes = {}, number of queries = {}'''.format(config.BACKBONE, config.pretrained,
+        number of classes = {}, number of queries = {}'''.format(config.BACKBONE, config.PRETRAINED,
         config.NUM_CLASSES, config.NUM_QUERIES))
     
     matcher = detr_loss.HungarianMatcher()
