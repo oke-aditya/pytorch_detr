@@ -1,7 +1,7 @@
 
 TRAIN_CSV_PATH = 'df_train.csv'
 VALIDATION_CSV_PATH = 'df_val.csv'
-IMAGE_DIR = 'images/'
+IMAGE_DIR = '/content/drive/My Drive/VAUV_Dataset/final_data/youtube/2017_VID_5FPS/'
 BACKBONE = "detr_resnet50"
 PRETRAINED = True
 
@@ -19,4 +19,4 @@ NUM_CLASSES = 4
 DETECTION_THRESHOLD = 0.25
 NULL_CLASS_COEF = 0.5
 
-MODEL_SAVE_PATH = "models/faster_rcnn_{}.pt".format(BACKBONE)
+MODEL_SAVE_PATH = "models/detr_{}.pt".format(BACKBONE)
