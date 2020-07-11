@@ -40,8 +40,33 @@ def train_fn(train_dataloader, detector, criterion, optimizer, device, scheduler
         bbox_loss.update(loss_dict['loss_bbox'].item())
         giou_loss.update(loss_dict['loss_giou'].item())
         labels_loss.update(loss_dict['loss_ce'].item())
-    
+
+    print("Training: ")
     print("Total_loss = {}, BBox_Loss = {}, GIOU_Loss = {}, Labels_Loss = {}".format(total_loss, bbox_loss, giou_loss, labels_loss))
     return total_loss
+
+@torch.no_grad()
+def eval_fn(val_dataloader, detector, criterion, device):
+    detector.eval()
+    criterion.eval()
+    eval_loss = utils.AverageMeter()
+
+    for images, targets, image_ids in tqdm(val_dataloader):
+        images = list(image.to(device) for image in images)
+        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+        outputs = detector(images)
+        loss_dict = criterion(outputs, targets)
+        weight_dict = criterion.weight_dict
+        losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+    
+    bbox_loss = loss_dict['loss_bbox'].item()
+    giou_loss = loss_dict['loss_giou'].item()
+    labels_loss = loss_dict['loss_ce'].item()
+    eval_loss.update(losses.item(), config.BATCH_SIZE)
+
+    print("Validation: ")
+    print("Total_loss = {}, BBox_Loss = {}, GIOU_Loss = {}, Labels_Loss = {}".format(eval_loss, bbox_loss, giou_loss, labels_loss))
+
+    return eval_loss
 
 

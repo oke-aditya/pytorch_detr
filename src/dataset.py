@@ -6,14 +6,14 @@ import albumentations as A
 from torch.utils.data import DataLoader, Dataset
 
 class DetectionDataset(Dataset):
-    def __init__(self, dataframe, image_dir, target, transforms=None, train=True):
+    def __init__(self, dataframe, image_dir, target, transforms=None):
         super().__init__()
 
         self.image_ids = dataframe['image_id'].unique()
         self.image_dir = image_dir
         self.transforms = transforms
         self.df = dataframe
-        self.train = train
+        # self.train = train
         self.target = target
 
     def __len__(self):
@@ -27,12 +27,6 @@ class DetectionDataset(Dataset):
         # Scale down the pixel values of image
         image /= 255.0
 
-        # if self.transforms is not None:  # Apply transformation
-        #     image = self.transforms(image)
-        
-        if(self.train is False):  # For test data
-            return image, image_id
-        
         # Else for train and validation data
         records = self.df[self.df['image_id'] == image_id]
 

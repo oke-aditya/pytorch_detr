@@ -1,5 +1,21 @@
-backbone = "detr_resnet50"
+
+TRAIN_CSV_PATH = 'df_train.csv'
+VALIDATION_CSV_PATH = 'df_val.csv'
+IMAGE_DIR = 'images/'
+BACKBONE = "detr_resnet50"
 pretrained = True
-NUM_CLASSES = 3
+
+IMG_HEIGHT = 512
+IMG_WIDTH = 512
 NUM_QUERIES = 10
+
 BATCH_SIZE = 32
+TRAIN_BATCH_SIZE = 2
+VALID_BATCH_SIZE = 2
+TRAIN_WORKERS = 4
+LEARNING_RATE = 1e-3
+EPOCHS = 10
+NUM_CLASSES = 5
+DETECTION_THRESHOLD = 0.25
+
+MODEL_SAVE_PATH = "models/faster_rcnn_{}.pt".format(BACKBONE)

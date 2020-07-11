@@ -13,6 +13,8 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
 
+def collate_fn(batch):
+    return tuple(zip(*batch))
 class AverageMeter(object):
     """Computes and stores the average and current value"""
     def __init__(self):
