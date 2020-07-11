@@ -31,10 +31,10 @@ def run():
     train_df = pd.read_csv(config.TRAIN_CSV_PATH)
     valid_df = pd.read_csv(config.VALIDATION_CSV_PATH)
     
-    train_dataset = dataset.detection_dataset(train_df, config.IMAGE_DIR, config.target, 
+    train_dataset = dataset.DetectionDataset(train_df, config.IMAGE_DIR, config.TARGET, 
     transforms=train_transforms(config.IMG_HEIGHT, config.IMG_WIDTH),)
     
-    valid_dataset = dataset.detection_dataset(valid_df, config.IMAGE_DIR, config.target, 
+    valid_dataset = dataset.DetectionDataset(valid_df, config.IMAGE_DIR, config.TARGET, 
     transforms=train_transforms(config.IMG_HEIGHT, config.IMG_WIDTH), )
 
     train_dataloader = DataLoader(train_dataset, batch_size=config.TRAIN_BATCH_SIZE,

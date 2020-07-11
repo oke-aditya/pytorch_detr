@@ -3,12 +3,12 @@ TRAIN_CSV_PATH = 'df_train.csv'
 VALIDATION_CSV_PATH = 'df_val.csv'
 IMAGE_DIR = 'images/'
 BACKBONE = "detr_resnet50"
-pretrained = True
+PRETRAINED = True
 
 IMG_HEIGHT = 512
 IMG_WIDTH = 512
 NUM_QUERIES = 10
-
+TARGET = "target"
 BATCH_SIZE = 32
 TRAIN_BATCH_SIZE = 2
 VALID_BATCH_SIZE = 2
