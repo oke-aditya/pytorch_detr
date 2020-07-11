@@ -45,7 +45,7 @@ def train_fn(train_dataloader, detector, criterion, optimizer, device, scheduler
     print("Total_loss = {}, BBox_Loss = {}, GIOU_Loss = {}, Labels_Loss = {}".format(total_loss.avg, bbox_loss.avg, giou_loss.avg, labels_loss.avg))
     return total_loss
 
-@torch.no_grad()
+
 def eval_fn(val_dataloader, detector, criterion, device):
     detector.eval()
     criterion.eval()
@@ -53,19 +53,19 @@ def eval_fn(val_dataloader, detector, criterion, device):
     bbox_loss = utils.AverageMeter()
     giou_loss = utils.AverageMeter()
     labels_loss = utils.AverageMeter()
-
-    for images, targets, image_ids in tqdm(val_dataloader):
-        images = list(image.to(device) for image in images)
-        targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
-        outputs = detector(images)
-        loss_dict = criterion(outputs, targets)
-        weight_dict = criterion.weight_dict
-        losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
-    
-        eval_loss.update(losses.item(), config.VALID_BATCH_SIZE)
-        bbox_loss.update(loss_dict['loss_bbox'].item())
-        giou_loss.update(loss_dict['loss_giou'].item())
-        labels_loss.update(loss_dict['loss_ce'].item())
+    with torch.no_grad():
+        for images, targets, image_ids in tqdm(val_dataloader):
+            images = list(image.to(device) for image in images)
+            targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+            outputs = detector(images)
+            loss_dict = criterion(outputs, targets)
+            weight_dict = criterion.weight_dict
+            losses = sum(loss_dict[k] * weight_dict[k] for k in loss_dict.keys() if k in weight_dict)
+        
+            eval_loss.update(losses.item(), config.VALID_BATCH_SIZE)
+            bbox_loss.update(loss_dict['loss_bbox'].item())
+            giou_loss.update(loss_dict['loss_giou'].item())
+            labels_loss.update(loss_dict['loss_ce'].item())
 
     print("Validation: ")
     print("Total_loss = {}, BBox_Loss = {}, GIOU_Loss = {}, Labels_Loss = {}".format(eval_loss.avg, bbox_loss.avg, giou_loss.avg, labels_loss.avg))
