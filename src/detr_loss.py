@@ -82,8 +82,6 @@ class HungarianMatcher(nn.Module):
 def build_matcher(args):
     return HungarianMatcher(cost_class=args.set_cost_class, cost_bbox=args.set_cost_bbox, cost_giou=args.set_cost_giou)
 
-
-
 class SetCriterion(nn.Module):
     """ This class computes the loss for DETR.
     The process happens in two steps:

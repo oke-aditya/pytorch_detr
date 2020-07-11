@@ -76,9 +76,10 @@ def run():
             max_loss = validation_loss.avg
             print("Validation Loss reduced than previous stage. Saving new model")
             torch.save(detector.state_dict(), config.MODEL_SAVE_PATH)
+            print('-' * 25)
+            print("Model Trained and Saved to Disk")
 
-    
-
-
+if __name__ == "__main__":
+    run()
 
 
