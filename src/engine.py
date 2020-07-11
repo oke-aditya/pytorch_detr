@@ -55,6 +55,7 @@ def eval_fn(val_dataloader, detector, criterion, device):
     labels_loss = utils.AverageMeter()
     with torch.no_grad():
         for images, targets, image_ids in tqdm(val_dataloader):
+            print("Here I was")
             images = list(image.to(device) for image in images)
             targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
             outputs = detector(images)
