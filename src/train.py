@@ -17,12 +17,12 @@ import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
 
 def train_transforms(img_height, img_width):
-    A.Compose([A.Resize(height=img_height, width=img_width, p=1.0), ToTensorV2(p=1.0)], p=1.0, 
+    return A.Compose([A.Resize(height=img_height, width=img_width, p=1.0), ToTensorV2(p=1.0)], p=1.0, 
         bbox_params=A.BboxParams(format='coco', min_area=0, 
         min_visibility=0, label_fields=['labels']))
 
 def val_transforms(img_height, img_width):
-    A.Compose([A.Resize(height=img_height, width=img_width, p=1.0), ToTensorV2(p=1.0)], p=1.0, 
+    return A.Compose([A.Resize(height=img_height, width=img_width, p=1.0), ToTensorV2(p=1.0)], p=1.0, 
         bbox_params=A.BboxParams(format='coco', min_area=0, 
         min_visibility=0, label_fields=['labels']))
 

@@ -31,7 +31,7 @@ class DetectionDataset(Dataset):
         records = self.df[self.df['image_id'] == image_id]
 
         # DETR takes in data in coco format 
-        boxes = records[['xtl', 'ytl', 'w', 'h']].values
+        boxes = records[['xtl', 'ytl', 'width', 'height']].values
 
         # Area of bb
         area = boxes[:, 2] * boxes[:, 3]

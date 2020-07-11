@@ -14,7 +14,7 @@ class detr_model(nn.Module):
         self.num_queries = num_queries
 
         self.model = torch.hub.load('facebookresearch/detr', backbone, pretrained=True)
-        self.in_feautres =  self.model.class_embed.in_features
+        self.in_features =  self.model.class_embed.in_features
         
         self.model.class_embed = nn.Linear(in_features=self.in_features, out_features=self.num_classes)
         self.model.num_queries = self.num_queries
