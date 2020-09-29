@@ -1,7 +1,6 @@
-
-TRAIN_CSV_PATH = 'df_train.csv'
-VALIDATION_CSV_PATH = 'df_val.csv'
-IMAGE_DIR = '/content/drive/My Drive/VAUV_Dataset/final_data/youtube/2017_VID_5FPS/'
+TRAIN_CSV_PATH = "df_train.csv"
+VALIDATION_CSV_PATH = "df_val.csv"
+IMAGE_DIR = "/content/drive/My Drive/VAUV_Dataset/final_data/youtube/2017_VID_5FPS/"
 BACKBONE = "detr_resnet50"
 PRETRAINED = True
 

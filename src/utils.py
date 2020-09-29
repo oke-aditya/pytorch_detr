@@ -16,19 +16,24 @@ from torch import Tensor
 # needed due to empty tensor bug in pytorch and torchvision 0.5
 import torchvision
 
+
 def seed_everything(seed):
     random.seed(seed)
-    os.environ['PYTHONHASHSEED'] = str(seed)
+    os.environ["PYTHONHASHSEED"] = str(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
 
+
 def collate_fn(batch):
     return tuple(zip(*batch))
+
+
 class AverageMeter(object):
     """Computes and stores the average and current value"""
+
     def __init__(self):
         self.reset()
 
@@ -45,18 +50,15 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
 
-
 def box_cxcywh_to_xyxy(x):
     x_c, y_c, w, h = x.unbind(-1)
-    b = [(x_c - 0.5 * w), (y_c - 0.5 * h),
-         (x_c + 0.5 * w), (y_c + 0.5 * h)]
+    b = [(x_c - 0.5 * w), (y_c - 0.5 * h), (x_c + 0.5 * w), (y_c + 0.5 * h)]
     return torch.stack(b, dim=-1)
 
 
 def box_xyxy_to_cxcywh(x):
     x0, y0, x1, y1 = x.unbind(-1)
-    b = [(x0 + x1) / 2, (y0 + y1) / 2,
-         (x1 - x0), (y1 - y0)]
+    b = [(x0 + x1) / 2, (y0 + y1) / 2, (x1 - x0), (y1 - y0)]
     return torch.stack(b, dim=-1)
 
 
@@ -113,11 +115,11 @@ def masks_to_boxes(masks):
     x = torch.arange(0, w, dtype=torch.float)
     y, x = torch.meshgrid(y, x)
 
-    x_mask = (masks * x.unsqueeze(0))
+    x_mask = masks * x.unsqueeze(0)
     x_max = x_mask.flatten(1).max(-1)[0]
     x_min = x_mask.masked_fill(~(masks.bool()), 1e8).flatten(1).min(-1)[0]
 
-    y_mask = (masks * y.unsqueeze(0))
+    y_mask = masks * y.unsqueeze(0)
     y_max = y_mask.flatten(1).max(-1)[0]
     y_min = y_mask.masked_fill(~(masks.bool()), 1e8).flatten(1).min(-1)[0]
 
@@ -143,7 +145,9 @@ def accuracy(output, target, topk=(1,)):
     return res
 
 
-def interpolate(input, size=None, scale_factor=None, mode="nearest", align_corners=None):
+def interpolate(
+    input, size=None, scale_factor=None, mode="nearest", align_corners=None
+):
     # type: (Tensor, Optional[List[int]], Optional[float], str, Optional[bool]) -> Tensor
     """
     Equivalent to nn.functional.interpolate, but with support for empty batch sizes.
@@ -160,4 +164,6 @@ def interpolate(input, size=None, scale_factor=None, mode="nearest", align_corne
         output_shape = list(input.shape[:-2]) + list(output_shape)
         return _new_empty_tensor(input, output_shape)
     else:
-        return torchvision.ops.misc.interpolate(input, size, scale_factor, mode, align_corners)
+        return torchvision.ops.misc.interpolate(
+            input, size, scale_factor, mode, align_corners
+        )
